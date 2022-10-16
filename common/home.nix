@@ -3,6 +3,7 @@
 {
 
   imports = [
+    ./emacs/default.nix
     ./persist/default.nix
     ./var/default.nix
     ./neovim/default.nix
