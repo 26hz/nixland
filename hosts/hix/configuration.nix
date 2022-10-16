@@ -122,6 +122,17 @@ in
     ];
   };
   programs.zsh.enable = true;
+  security = {
+    sudo.enable = true;
+    doas = {
+      enable = true;
+      #wheelNeedsPassword = true;
+      extraConfig = ''
+        permit keepenv nopass :wheel
+        # permit keepenv persist :wheel
+      '';
+    };
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

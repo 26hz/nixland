@@ -27,7 +27,7 @@
     shellAliases = {
       cdconf = "cd $HOME/nixland";
       nixupdate = "nix flake update";
-      nixupgrade = "sudo nixos-rebuild switch --flake .#hix";
+      nixupgrade = "doas nixos-rebuild switch --flake .#hix";
       fars = "curl -F 'c=@-' 'https://fars.ee/' <";
       gaa = "git add .";
       gcm = "git commit -m";
