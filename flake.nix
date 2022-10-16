@@ -13,7 +13,6 @@
     };
     impermanence = {
       url = github:nix-community/impermanence;
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     musnix = {
       url = github:musnix/musnix;

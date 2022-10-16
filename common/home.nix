@@ -21,15 +21,4 @@
     tdesktop
     google-chrome
   ];
-
-  #home.persistence."/nix/persist//home/${user}/dotfiles" = {
-    #removePrefixDirectory = true;
-    #directories = [
-      #"fcitx5/.local/share/fcitx5"
-    #];
-    #files = [
-      #"screen/.screenrc"
-    #];
-    #allowOther = false;
-  #};
 }
