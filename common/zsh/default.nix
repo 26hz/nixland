@@ -18,7 +18,23 @@
     };
     dotDir = ".config/zsh";
     #envExtra = ""; #Extra commands that should be added to .zshenv
-    #initExtra = ""; #Extra commands that should be added to .zshrc
+    initExtra = ''
+      my-backward-delete-word() {
+        #local WORDCHARS='~!#$%^&*(){}[]<>?.+;-'
+        local WORDCHARS="."
+        zle backward-delete-word
+      }
+      my-backward-kill-word() {
+        local WORDCHARS="."
+        zle backward-kill-word
+      }
+      zle -N my-backward-delete-word
+      zle -N my-backward-kill-word
+      bindkey '^W' my-backward-kill-word
+      bindkey '^[^?' my-backward-delete-word
+      bindkey "^A" vi-beginning-of-line
+      bindkey "^E" vi-end-of-line
+    ''; #Extra commands that should be added to .zshrc
     #localVariables = {};
     #loginExtra = {};
     #logoutExtra = {};
@@ -36,7 +52,7 @@
       gph = "git push";
       gco = "git checkout";
       gst = "git status";
-      glog = "git log --pretty=format:'%C(auto)%h %ad | %C(auto)%s%d %Cblue(%an)' --graph --date=short";
+      glog = "git log --pretty=format:'%C(auto)%h %ad | %C(auto)%s%d %Cblue(%an)' --graph --date=format:'%Y-%m-%d %H:%M:%S[%z]'";
     };
     plugins = [
       {
