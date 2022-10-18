@@ -12,6 +12,7 @@
       #"nixland"
       { directory = "nixland"; method = "symlink"; }
       ".local/share/fcitx5"
+      ".local/share/TelegramDesktop"
       ".config/fcitx5"
       ".config/google-chrome"
     ];
