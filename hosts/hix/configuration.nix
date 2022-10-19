@@ -1,4 +1,4 @@
-{ lib, config, pkgs, inputs, ... }:
+{ lib, config, pkgs, ... }:
 
 let
   impermanence = builtins.fetchTarball {
@@ -140,18 +140,9 @@ in
   #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #   wget
   # ];
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacsNativeComp;
-  };
-
-  nixpkgs.overlays = [
-    (import inputs.emacs-overlay)
-  ];
 
   environment.systemPackages = with pkgs; [
     vim
-    emacsNativeComp
     wget
     git
     nix-prefetch-git
