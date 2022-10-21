@@ -9,7 +9,7 @@
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
@@ -59,13 +59,13 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  # Nvidia Drivers
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.opengl.enable = true;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+  # Video Drivers
+  #services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "amdgpu" ];
+  hardware.opengl.driSupport = true;
+  #hardware.opengl.driSupport32Bit = true;
+  #hardware.opengl.enable = true;
+  #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   services.xserver.screenSection = ''
-    #Option	"metamodes" "HDMI-0: 2560x1080_144 +0+550, DP-0: 2560x1440_144 +2560+0"
-    #Option	"AllowIndirectGLXProtocol" "off"
-    #Option	"TripleBuffer" "on"
   '';
 }
