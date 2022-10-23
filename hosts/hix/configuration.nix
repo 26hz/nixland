@@ -49,17 +49,38 @@ in
     #keyMap = "us";
     useXkbConfig = true; # use xkbOptions in tty.
   };
-  fonts.fonts = with pkgs; [
-    wqy_microhei
-    noto-fonts-emoji
-    (
-      nerdfonts.override {
-        fonts = [
-          "FiraCode"
-        ];
-      }
-    )
-  ];
+  fonts = {
+    enableDefaultFonts = true;
+    fonts = with pkgs; [
+      sarasa-gothic
+      noto-fonts-emoji
+      (
+        nerdfonts.override {
+          fonts = [
+            "FiraCode"
+          ];
+        }
+      )
+    ];
+    fontconfig = {
+      defaultFonts = {
+        serif = [ "Sarasa Fixed SC" ];
+        sansSerif = [ "Sarasa Fixed SC" ];
+        monospace = [ "FiraCode Nerd Font Mono" ];
+        emoji = [ "Noto Color Emoji" ];
+      };
+      localConf = ''
+        <match>
+          <test compare="contains" name="lang">
+            <string>zh_CN</string>
+          </test>
+          <edit mode="prepend" name="family">
+            <string>Sarasa Fixed SC</string>
+          </edit>
+        </match>
+      '';
+    };
+  };
   nixpkgs.config.allowUnfree = true;
 
   # Enable the X11 windowing system.
