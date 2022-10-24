@@ -22,5 +22,6 @@
   home.packages = with pkgs; [
     tdesktop
     google-chrome
+    neofetch
   ];
 }
