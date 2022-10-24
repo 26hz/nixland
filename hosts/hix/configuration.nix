@@ -176,6 +176,8 @@ in
     kalendar
     kcolorchooser
     helvum
+    libimobiledevice
+    ifuse
   ] ++ (with libsForQt5; [
     ark
     kate
@@ -183,6 +185,7 @@ in
     kmousetool
     krdc
   ]);
+  services.usbmuxd.enable = true;
   #environment.etc."machine-id".source
     #= "/nix/persist/etc/machine-id";
   #environment.etc."ssh/ssh_host_rsa_key".source
