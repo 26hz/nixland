@@ -49,7 +49,10 @@
               users.${user} = {
                 home.stateVersion = "22.11";
                 home.homeDirectory = "/home/${user}";
-                imports = [ "${impermanence}/home-manager.nix" (import ./common/home.nix) ];
+                imports = [
+                  "${impermanence}/home-manager.nix"
+                  (import ./common/home.nix)
+                ];
               };
             };
           }
