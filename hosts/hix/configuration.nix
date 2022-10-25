@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, inputs, system, ... }:
 
 let
   impermanence = builtins.fetchTarball {

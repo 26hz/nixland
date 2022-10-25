@@ -20,9 +20,13 @@
       url = github:musnix/musnix;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = github:ryantm/agenix;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, nixos-cn, home-manager, impermanence, musnix, ... }:
+  outputs = inputs @ { self, nixpkgs, nixos-cn, home-manager, impermanence, musnix, agenix, ... }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
