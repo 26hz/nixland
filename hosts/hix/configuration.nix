@@ -168,6 +168,7 @@ in
     vim
     wget
     git
+    gptfdisk
     nix-prefetch-git
     nix-prefetch-scripts
     manix

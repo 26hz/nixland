@@ -215,7 +215,6 @@ List of keybindings (SPC h b b)")
 (emms-playing-time 1)
 (setq emms-source-file-default-directory "/nix/persist/home/hertz/Music/songs/"
       emms-playlist-buffer-name "*Music*"
-      emms-player-list '(emms-player-mpd)
       emms-info-asynchronously t
       emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 (map! :leader

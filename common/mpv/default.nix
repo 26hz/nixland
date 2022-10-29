@@ -3,11 +3,11 @@
 {
   programs.mpv = {
     enable = true;
-    package = pkgs.wrapMpv (
-      pkgs.mpv-unwrapped.override {
-        vapoursynthSupport = true;
-      }
-    ) { youtubeSupport = true; };
+    #package = pkgs.wrapMpv (
+    #  pkgs.mpv-unwrapped.override {
+    #    vapoursynthSupport = true;
+    #  }
+    #) { youtubeSupport = true; };
     bindings = {
       WHEEL_UP = "seek 10";
       WHEEL_DOWN = "seek -10";
