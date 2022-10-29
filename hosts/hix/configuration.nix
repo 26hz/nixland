@@ -53,6 +53,8 @@ in
     enableDefaultFonts = true;
     fonts = with pkgs; [
       sarasa-gothic
+      ubuntu_font_family
+      jetbrains-mono
       noto-fonts-emoji
       (
         nerdfonts.override {

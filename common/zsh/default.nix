@@ -46,6 +46,8 @@
       nixupgrade = "doas nixos-rebuild switch --flake .#hix";
       dh = "df -h -x fuse --output=source,fstype,size,pcent,target";
       fars = "curl -F 'c=@-' 'https://fars.ee/' <";
+      es = "emacsclient -t -a 'emacs' ";
+      emms = "emacsclient -c -a 'emacs' --eval '(emms)' --eval '(emms-play-directory-tree \"~/Music/\")'";
       gaa = "git add .";
       gcm = "git commit -m";
       gca = "git commit --amend -m";

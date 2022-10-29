@@ -11,7 +11,9 @@
       "Videos"
       #"nixland"
       { directory = "nixland"; method = "symlink"; }
+      ".cache/doom"
       ".local/share/fcitx5"
+      ".local/share/doom"
       ".local/share/TelegramDesktop"
       ".local/state/wireplumber"
       ".config/fcitx5"
@@ -77,7 +79,7 @@
       ".config/spectaclerc"
       ".config/startkderc"
       ".config/systemsettingsrc"
-      ".config/Trolltech.conf"
+      #".config/Trolltech.conf"
       ".local/share/krunnerstaterc"
       ".local/share/user-places.xbel"
       ".local/share/user-places.xbel.bak"

@@ -13,6 +13,9 @@
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-doom-emacs = {
+      url = github:nix-community/nix-doom-emacs;
+    };
     impermanence = {
       url = github:nix-community/impermanence;
     };
@@ -26,7 +29,7 @@
     };
   };
 
-  outputs = inputs @ { self, nixpkgs, nixos-cn, home-manager, impermanence, musnix, agenix, ... }:
+  outputs = inputs @ { self, nixpkgs, nixos-cn, home-manager, nix-doom-emacs, impermanence, musnix, agenix, ... }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -55,6 +58,7 @@
                 home.homeDirectory = "/home/${user}";
                 imports = [
                   "${impermanence}/home-manager.nix"
+                  nix-doom-emacs.hmModule
                   (import ./common/home.nix)
                 ];
               };

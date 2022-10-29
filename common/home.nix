@@ -3,9 +3,12 @@
 {
 
   imports = [
-    ./emacs/default.nix
+    #./emacs/default.nix
+    ./doom/default.nix
     ./persist/default.nix
     ./var/default.nix
+    ./mpd/default.nix
+    ./mpv/default.nix
     ./neovim/default.nix
     ./git/default.nix
     ./zsh/default.nix
@@ -20,8 +23,14 @@
   };
 
   home.packages = with pkgs; [
+    fish
     tdesktop
     google-chrome
     neofetch
   ];
+  xsession = {
+    profileExtra = ''
+      emacs --daemon &
+    '';
+  };
 }

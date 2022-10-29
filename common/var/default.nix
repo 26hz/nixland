@@ -4,7 +4,7 @@
 
   home = {
     sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "emacs";
 #      XIM_PROGRAM = "fcitx";
 #      XIM = "fcitx";
 #      GTK_IM_MODULE = "fcitx";
