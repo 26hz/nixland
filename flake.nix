@@ -72,6 +72,38 @@
           }
         ];
       };
+      hiv = lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./hosts/hiv/configuration.nix
+          nixos-cn.nixosModules.nixos-cn-registries
+          nixos-cn.nixosModules.nixos-cn
+          home-manager.nixosModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit user;
+              };
+              users.${user} = {
+                home.stateVersion = "22.11";
+                home.homeDirectory = "/home/${user}";
+                imports = [
+                  "${impermanence}/home-manager.nix"
+                  nix-doom-emacs.hmModule
+                  (import ./common/home.nix)
+                ];
+              };
+            };
+          }
+          musnix.nixosModules.musnix {
+            musnix = {
+              enable = true;
+              alsaSeq.enable = false;
+            };
+          }
+        ];
+      };
     };
   };
 }

@@ -43,7 +43,7 @@
     shellAliases = {
       cdconf = "cd $HOME/nixland";
       nixupdate = "nix flake update";
-      nixupgrade = "doas nixos-rebuild switch --flake .#hix";
+      nixupgrade = "export HOST=`hostname`; doas nixos-rebuild switch --flake .#\${HOST}";
       dh = "df -h -x fuse --output=source,fstype,size,pcent,target";
       fars = "curl -F 'c=@-' 'https://fars.ee/' <";
       es = "emacsclient -t -a 'emacs' ";
