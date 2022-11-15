@@ -15,7 +15,7 @@
     };
     config = {
       profile = "gpu-hq";
-      force-window = true;
+      force-window = false;
       ytdl-format = "bestvideo+bestaudio";
       cache-default = 4000000;
     };
