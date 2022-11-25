@@ -3,7 +3,7 @@
 let
   impermanence = builtins.fetchTarball {
     url = "https://github.com/nix-community/impermanence/archive/master.tar.gz";
-    sha256 = "1xj0s2qj7xcq1zai6diymfza7mxwhizw1akxz392nv39az71yn24";
+    sha256 = "114xvdxdwmfvyi78ifb3kpscwrjkwndjxnl27dqcixpcjrjkhdj2";
   };
 in
 {
