@@ -1,41 +1,53 @@
-{ lib, config, pkgs, inputs, system, ... }:
+{ lib, config, pkgs, inputs, ... }:
 
 let
   impermanence = builtins.fetchTarball {
     url = "https://github.com/nix-community/impermanence/archive/master.tar.gz";
-    sha256 = "114xvdxdwmfvyi78ifb3kpscwrjkwndjxnl27dqcixpcjrjkhdj2";
+    sha256 = "0hpp8y80q688mvnq8bhvksgjb6drkss5ir4chcyyww34yax77z0l";
   };
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
       ./hardware-configuration.nix
       "${impermanence}/nixos.nix"
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    supportedFilesystems = [ "zfs" ];
+    kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    #kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+  };
 
-  networking.hostName = "hix"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking = {
+    hostId = "a73fc6f9";
+    hostName = "hix";
+    useDHCP = false;
+    networkmanager.enable = true;
+  };
 
-  # Set your time zone.
-  time.timeZone = "Asia/Shanghai";
+  users = {
+    mutableUsers = false;
+    users = {
+      hertz = {
+        isNormalUser = true;
+        extraGroups = [ "wheel" "networkmanager" "video" "users" "audio" ];
+        initialHashedPassword = "$6$tdnBTo5ZGx1Sprin$ceT9r2b2SWq9tDOGWdGJ5yGk4KiyJ9MGBNOUycEBBRsEPSU1e7h/w.xg6PBDsZKFHKGCJQu7ersf7ofjCratn1";
+        shell = pkgs.zsh;
+        packages = with pkgs; [
+          #firefox
+        ];
+      };
+      root = {
+        initialHashedPassword = "$6$x3CsIKfJgYYEloRp$8ptg.adJSFzmwqwC4jiBzkBDF/4ZZAxiU3Bh2f5EoDmghSIo42PBrcNhIUCfEtkjNFHEHHUeZjamzs2ExjMJi/";
+      };
+    };
+  };
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkbOptions in tty.
-  # };
   i18n = {
     defaultLocale = "en_US.UTF-8";
     inputMethod = {
@@ -43,12 +55,18 @@ in
       fcitx5.addons = with pkgs; [ fcitx5-rime ];
     };
   };
+
+  time = {
+    timeZone = "Asia/Shanghai";
+  };
+
   console = {
     font = "ter-i22b";
     packages = with pkgs; [ terminus_font ];
     #keyMap = "us";
     useXkbConfig = true; # use xkbOptions in tty.
   };
+
   fonts = {
     enableDefaultFonts = true;
     fonts = with pkgs; [
@@ -83,149 +101,60 @@ in
       '';
     };
   };
-  nixpkgs.config.allowUnfree = true;
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      allowBroken = true;
+    };
+  };
 
+  zramSwap.enable = true;
 
-  # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-  services.colord.enable = true;
-  programs.kdeconnect.enable = true;
-  programs.partition-manager.enable = true;
+  environment = {
+    persistence."/persist" = {
+      hideMounts = true;
+      directories = [
+        "/etc/ssh"
+        "/etc/nixos"
+        "/etc/NetworkManager/system-connections"
+        "/var/log"
+        "/var/lib/cups"
+        "/var/lib/fprint"
+        "/var/db/sudo/lectured"
+      ];
+      files = [
+        "/etc/machine-id"
+        "/etc/nix/id_rsa"
+      ];
+    };
+    systemPackages = with pkgs; [
+      vim
+      wget
+      git
+      ntfs3g
+      firefox
+    ] ++ (with libsForQt5; [
+      ark
+      kate
+      kcalc
+      kmousetool
+      krdc
+    ]);
+  };
 
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = {
-  #   "eurosign:e";
-  #   "caps:escape" # map caps to escape.
-  # };
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    config.pipewire = {
-      "context.properties" = {
-        "link.max-buffers" = 16;
-	"log.level" = 2;
-	"default.clock.rate" = 48000;
-	"default.clock.quantum" = 1024;
-	"default.clock.min-quantum" = 32;
-	"default.clock.max-quantum" = 8192;
+  programs = {
+    zsh.enable = true;
+    kdeconnect.enable = true;
+    partition-manager.enable = true;
+    fuse.userAllowOther = true;
+    gnupg = {
+      agent = {
+        enable = true;
+        enableSSHSupport = true;
       };
     };
   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.root.initialHashedPassword = "$6$jjMzmucC0DEns/EJ$89cxnruCo4svbLhl2o5kEbNaxdTjEofzxxYCY72x7SHGqUzLiN.jUt1pBfEbxLNo/vmHiyWi3bnPkSTJx6V9R1";
-  users.users.hertz.initialHashedPassword = "$6$/XvcuMvhfoJBX.Xd$tIciFFJiCVmvZr7NeedJVPE2O4NNNMsunBcyp529nswm9T2AJtiyGKoEqz/KLYX96nM/tf7ruDC6VxV8n6Prr.";
-  # Don't allow mutation of users outside of the config.
-  users.mutableUsers = false;
-  users.users.hertz = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "users" "audio" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
-    packages = with pkgs; [
-      #firefox
-    ];
-  };
-  programs.zsh.enable = true;
-  security = {
-    sudo.enable = true;
-    doas = {
-      enable = true;
-      #wheelNeedsPassword = true;
-      extraConfig = ''
-        permit keepenv nopass :wheel
-        # permit keepenv persist :wheel
-      '';
-    };
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  # ];
-
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    git
-    gptfdisk
-    nix-prefetch-git
-    nix-prefetch-scripts
-    manix
-    killall
-    usbutils
-    ntfs3g
-    xorg.xhost
-    kalendar
-    kcolorchooser
-    helvum
-    libimobiledevice
-    ifuse
-  ] ++ (with libsForQt5; [
-    ark
-    kate
-    kcalc
-    kmousetool
-    krdc
-  ]);
-  services.usbmuxd.enable = true;
-  #environment.etc."machine-id".source
-    #= "/nix/persist/etc/machine-id";
-  #environment.etc."ssh/ssh_host_rsa_key".source
-    #= "/nix/persist/etc/ssh/ssh_host_rsa_key";
-  #environment.etc."ssh/ssh_host_rsa_key.pub".source
-    #= "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
-  #environment.etc."ssh/ssh_host_ed25519_key".source
-    #= "/nix/persist/etc/ssh/ssh_host_ed25519_key";
-  #environment.etc."ssh/ssh_host_ed25519_key.pub".source
-    #= "/nix/persist/etc/ssh/ssh_host_ed25519_key.pub";
-  programs.fuse.userAllowOther = true;
-  environment.persistence."/nix/persist" = {
-    directories = [
-      "/etc/nixos"
-      "/etc/NetworkManager/system-connections"
-    ];
-    files = [
-      "/etc/machine-id"
-      "/etc/ssh/ssh_host_rsa_key"
-      "/etc/ssh/ssh_host_rsa_key.pub"
-      "/etc/ssh/ssh_host_ed25519_key"
-      "/etc/ssh/ssh_host_ed25519_key.pub"
-    ];
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   nix = {
     settings = {
@@ -255,24 +184,55 @@ in
     '';
   };
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  security = {
+    rtkit.enable = true;
+    sudo.enable = true;
+    doas = {
+      enable = true;
+      #wheelNeedsPassword = true;
+      extraConfig = ''
+        permit keepenv nopass :wheel
+        # permit keepenv persist :wheel
+      '';
+    };
+  };
 
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
+  services = {
+    xserver = {
+      enable = true;
+      displayManager.sddm.enable = true;
+      desktopManager.plasma5.enable = true;
+    };
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+      config.pipewire = {
+        "context.properties" = {
+          "link.max-buffers" = 16;
+          "log.level" = 2;
+          "default.clock.rate" = 48000;
+          "default.clock.quantum" = 1024;
+          "default.clock.min-quantum" = 32;
+          "default.clock.max-quantum" = 8192;
+        };
+      };
+    };
+    openssh = {
+      enable = true;
+    };
+    usbmuxd = {
+      enable = true;
+    };
+    colord = {
+      enable = true;
+    };
+  };
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "22.11";
 
 }
+
 

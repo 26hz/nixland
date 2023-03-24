@@ -5,7 +5,7 @@
   imports = [
     #./emacs/default.nix
     ./doom/default.nix
-    ./persist/default.nix
+    #./persist/default.nix
     ./var/default.nix
     ./mpd/default.nix
     ./mpv/default.nix
