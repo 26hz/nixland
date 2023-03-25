@@ -9,7 +9,7 @@
       settings = {
         add_newline = true;
         format = ''
-          ╔═$shlvl$shell$username$hostname$nix_shell$directory$git_branch$git_commit$git_state$git_status$jobs$cmd_duration
+          ╔═$shlvl$shell$username$hostname$nix_shell$directory$git_branch$git_commit$git_state$git_status$golang$jobs$cmd_duration
           ╚═$character
         '';
         shlvl = {
@@ -59,18 +59,43 @@
           style = "bright-purple bold";
         };
         git_status = {
-          conflicted = "🏳";
-          ahead = "🏎💨";
-          behind = "😰";
-          diverged = "😵";
-          up_to_date = "✓";
-          untracked = "🤷";
-          stashed = "📦";
-          modified = "📝";
-          staged = "[++($count)](green)";
-          renamed = "👅";
-          deleted = "🗑 ";
+          ##conflicted = "🏳";
+          ##ahead = "🏎💨";
+          ##behind = "😰";
+          ##diverged = "😵";
+          ##up_to_date = "✓";
+          ##untracked = "🤷";
+          ##stashed = "📦";
+          ##modified = "📝";
+          ##staged = "[++($count)](green)";
+          ##renamed = "👅";
+          ##deleted = "🗑 ";
+          ##style = "bright-green bold";
+          disabled = false;
+          ignore_submodules = false;
+          ahead = "⇡";
+          behind = "⇣";
+          diverged = "⇕";
+          conflicted = "=";
+          deleted = "✘";
+          format = "([\\[$all_status$ahead_behind\\]]($style) )";
           style = "bright-green bold";
+          modified = "!";
+          renamed = "»";
+          staged = "[++($count)](green)";
+          stashed = "\\$";
+          untracked = "?";
+          up_to_date = "✓";
+        };
+        golang = {
+          #format = "via [$version](bold cyan) ";
+          #version_format = "v [$raw]";
+          symbol = " ";
+          #detect_extensions = "go";
+          #detect_files = "['go.mod', 'go.sum', 'go.work', 'glide.yaml', 'Gopkg.yml', 'Gopkg.lock', '.go-version']";
+          #detect_folders = "['Godeps']";
+          #style = "'bold cyan'";
+          disabled = false;
         };
         directory = {
           read_only = " ";

@@ -11,6 +11,7 @@
     ./mpv/default.nix
     ./neovim/default.nix
     ./git/default.nix
+    ./go/default.nix
     ./zsh/default.nix
     ./starship/default.nix
   ];
