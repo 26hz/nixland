@@ -19,16 +19,19 @@
       };
     };
     ignores = [ "*~" "*.swp" ];
-    #signing = {
+    signing = {
       #gpgPath = "\${pkgs.gnupg}/bin/gpg2";
-      #key = 
-      #signByDefault = true;
-    #};
+      key = "A0F6A25F63CD3D72";
+      signByDefault = true;
+    };
     extraConfig = {
       core = {
         editor = "nvim";
         whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
         #pager = "delta";
+      };
+      credential = {
+        helper = "store";
       };
     };
     aliases = {
