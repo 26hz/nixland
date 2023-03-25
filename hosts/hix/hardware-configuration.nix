@@ -41,6 +41,12 @@
       neededForBoot = true;
     };
 
+  fileSystems."/tmp" =
+    { device = "none";
+      fsType = "tmpfs";
+      options = [ "defaults" "size=32G" "mode=1777" ];
+    };
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
